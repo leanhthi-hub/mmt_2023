@@ -69,22 +69,73 @@ class Client:
 	def setupMovie(self):
 		"""Setup button handler."""
 	#TODO
+		if self.state == self.INIT:
+			self.sendRtspRequest(self.SETUP)
 	
 	def exitClient(self):
 		"""Teardown button handler."""
+		self.sendRtspRequest(self.TEARDOWN)
+		self.master.destroy() # close GUI
+		os.remove(CACHE_FILE_NAME + str(self.sessionId) + CACHE_FILE_EXT)
+		
+
 	#TODO
 
 	def pauseMovie(self):
 		"""Pause button handler."""
 	#TODO
+		if self.state == self.PLAYING:
+			self.sendRtspRequest(self.PAUSE)
 	
 	def playMovie(self):
 		"""Play button handler."""
-	#TODO
+
+  
+		if self.state == self.READY:
+      
+			threading.Thread(target=self.listenRtp).start()
+
+			self.playEvent = threading.Event()
+   
+			self.playEvent.clear()
+   
+			self.sendRtspRequest(self.PLAY)
 	
 	def listenRtp(self):		
 		"""Listen for RTP packets."""
 		#TODO
+		while  True:
+
+			try:
+				data = self.rtpSocket.recv(20480)
+		
+				if data:
+
+					rtpPacket = RtpPacket()
+
+					rtpPacket.decode(data)
+     
+					currFrameNbr = rtpPacket.seqNum()
+     
+					print("Curren Seq Num: "+ str(currFrameNbr))
+     
+					if currFrameNbr > self.frameNbr:
+						self.frameNbr = currFrameNbr
+						self.updateMovie(self.writeFrame(rtpPacket.getPayload()))
+			except:
+
+				if self.playEvent.is_set():
+					break
+ 
+ 
+				if self.teardownAcked == 1:
+					
+					self.rtpSocket.shutdown(socket.SHUT_RDWR)
+     
+					self.rtpSocket.close()
+     
+					break
+       		
 					
 	def writeFrame(self, data):
 		"""Write the received frame to a temp image file. Return the image file."""
