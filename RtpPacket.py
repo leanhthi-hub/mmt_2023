@@ -3,7 +3,7 @@ from time import time
 HEADER_SIZE = 12
 
 class RtpPacket:	
-	header = bytearray(HEADER_SIZE)
+	# header = bytearray(HEADER_SIZE)
 	
 	def __init__(self):
 		pass
@@ -16,31 +16,34 @@ class RtpPacket:
 		# TO COMPLETE
 		#--------------
 		# Fill the header bytearray with RTP header fields
-		# header[0] 8 bit: version, padding, extension, cc
-		header[0] = (header[0] | version << 6) & 0xC0  # đưa 2 bit của version thành 2 bit đầu tiên
-		header[0] = (header[0] | padding << 5)  # đưa 1 bit của padding thành bit thứ 3
-		header[0] = (header[0] | extension << 4)  # đưa 1 bit extension thành bit thứ 4
-		header[0] = (header[0] | (cc & 0x0F))
-		# header[1] 8 bit: marker, pt
-		header[1] = (header[1] | marker << 7)
-		header[1] = (header[1] | (pt & 0x7F))
-		# header[2-3] 16 bit: seqnum
-		header[2] = (seqnum & 0xFF00) >> 8  # lấy 8 bit đầu của seq number
-		header[3] = (seqnum & 0xFF)  # lấy 8 bit cuối của seq number
-		# header[4-7] 32 bit: timestamp
-		header[4] = (timestamp >> 24)
-		header[5] = (timestamp >> 16) & 0xFF
-		header[6] = (timestamp >> 8) & 0xFF
-		header[7] = (timestamp & 0xFF)
-		# header[8-11] 32 bit: ssrc
-		header[8] = (ssrc >> 24)
-		header[9] = (ssrc >> 16) & 0xFF
-		header[10] = (ssrc >> 8) & 0xFF
+		
+		# header[0] = ...
+		# ...
+		
+		header[0] = (header[0] | version << 6) & 0xC0; # 2 bits
+		header[0] = (header[0] | padding << 5); # 1 bit
+		header[0] = (header[0] | extension << 4); # 1 bit
+		header[0] = (header[0] | (cc & 0x0F)); # 4 bits
+		header[1] = (header[1] | marker << 7); # 1 bit
+		header[1] = (header[1] | (pt & 0x7f)); # 7 bits
+		header[2] = (seqnum & 0xFF00) >> 8; # 16 bits total, this is first 8
+		header[3] = (seqnum & 0xFF); # second 8
+		header[4] = (timestamp >> 24); # 32 bit timestamp
+		header[5] = (timestamp >> 16) & 0xFF;
+		header[6] = (timestamp >> 8) & 0xFF;
+		header[7] = (timestamp & 0xFF);
+		header[8] = (ssrc >> 24); # 32 bit ssrc
+		header[9] = (ssrc >> 16) & 0xFF;
+		header[10] = (ssrc >> 8) & 0xFF;
 		header[11] = ssrc & 0xFF
-		self.header = header
-
+		
+		# Set RtpPacket's header and payload.
 		# Get the payload from the argument
+		# self.payload = ...
+		self.header = header
 		self.payload = payload
+		
+		
 		
 	def decode(self, byteStream):
 		"""Decode the RTP packet."""
