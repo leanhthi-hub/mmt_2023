@@ -50,15 +50,16 @@ class Client:
 		self.teardownAcked = 0
 		self.connectToServer()
 		self.frameNbr = 0
+		self.sendRtspRequest(self.SETUP)
 		
 	# THIS GUI IS JUST FOR REFERENCE ONLY, STUDENTS HAVE TO CREATE THEIR OWN GUI 	
 	def createWidgets(self):
 		"""Build GUI."""
 		# Create Setup button
-		self.setup = Button(self.master, width=20, padx=3, pady=3)
-		self.setup["text"] = "Setup"
-		self.setup["command"] = self.setupMovie
-		self.setup.grid(row=1, column=0, padx=2, pady=2)
+		# self.setup = Button(self.master, width=20, padx=3, pady=3)
+		# self.setup["text"] = "Setup"
+		# self.setup["command"] = self.setupMovie
+		# self.setup.grid(row=1, column=0, padx=2, pady=2)
 		
 		# Create Play button		
 		self.start = Button(self.master, width=20, padx=3, pady=3)
@@ -118,11 +119,11 @@ class Client:
 		self.switch["command"] = self.showListVideo
 		self.switch.grid(row=1, column=4, padx=2, pady=2)
 	
-	def setupMovie(self):
-		"""Setup button handler."""
-		# TODO
-		if self.state == self.INIT:
-			self.sendRtspRequest(self.SETUP)
+	# def setupMovie(self):
+	# 	"""Setup button handler."""
+	# 	# TODO
+	# 	if self.state == self.INIT:
+	# 		self.sendRtspRequest(self.SETUP)
 	
 	def startAgain(self):
 		"""Setup button handler."""
