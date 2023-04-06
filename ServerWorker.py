@@ -175,7 +175,7 @@ class ServerWorker:
 			if self.state != self.INIT:
 				self.replyRtsp(self.OK_200, seq[1], requestType)
     
-    
+		# Process SWITCH request
 		elif requestType == self.SWITCH:
 			if self.state != self.INIT:
 				self.clientInfo['videoStream'].currentFile().close()

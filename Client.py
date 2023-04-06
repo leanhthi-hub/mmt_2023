@@ -112,8 +112,8 @@ class Client:
 		# Create a label to display the movie
 		self.label = Label(self.master, height=19)
 		self.label.grid(row=0, column=0, columnspan=6, sticky=W+E+N+S, padx=5, pady=5) 
-		# Create Switch button
 		
+  		# Create Switch button
 		self.switch = Button(self.master, width=20, padx=3, pady=3)
 		self.switch["text"] = "Switch"
 		self.switch["command"] = self.showListVideo
@@ -147,7 +147,7 @@ class Client:
 		self.playEvent.clear()
 
 		self.sendRtspRequest(self.SLOWDOWN)
-		self.state = self.PLAYING
+		# self.state = self.PLAYING
 	def speedUp(self):
 		threading.Thread(target=self.listenRtp).start()
 
@@ -157,7 +157,7 @@ class Client:
 		self.playEvent.clear()
 
 		self.sendRtspRequest(self.SPEEDUP)
-		self.state = self.PLAYING
+		# self.state = self.PLAYING
 	def exitClient(self):
 		"""Teardown button handler."""
 		#TODO
@@ -207,8 +207,7 @@ class Client:
 		
 		self.switch.post(self.start.winfo_rootx() + 450, self.start.winfo_rooty() + 40)
   	
-		  
-			
+		  	
 	def switchVideo(self, index):
 		"""Change video"""
 		threading.Thread(target=self.listenRtp).start()
