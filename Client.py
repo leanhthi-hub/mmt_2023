@@ -126,13 +126,12 @@ class Client:
         self.switch.grid(row=1, column=3, padx=2, pady=2)
 
     # def setupMovie(self):
-    # 	"""Setup button handler."""
-    # 	# TODO
-    # 	if self.state == self.INIT:
-    # 		self.sendRtspRequest(self.SETUP)
+    #     """Setup button handler."""
+    #     if self.state == self.INIT:
+    #         self.sendRtspRequest(self.SETUP)
 
     def startAgain(self):
-        """Setup button handler."""
+        """Start again button handler."""
         # TODO
         threading.Thread(target=self.listenRtp).start()
         self.state = self.READY
@@ -223,6 +222,7 @@ class Client:
         self.playEvent.clear()
         self.fileName = self.listFile[index]
         self.sendRtspRequest(self.SWITCH)
+        # print(self.state)
 
     def listenRtp(self):
         """Listen for RTP packets."""
@@ -543,7 +543,7 @@ class Client:
                         for i in range(3, len(lines)-1):
                             description += lines[i] + "\n\n"
                         packet_sent = int(lines[-1].split(" ")[-1])
-                        description += f"Packet loss: {(packet_sent - self.recv_packet_count)/packet_sent*100:.2f}%"
+                        description += f"Packet loss: {(packet_sent - self.recv_packet_count)/max(1,packet_sent)*100:.2f}%"
                         description += f"\n\n-->Sent: {packet_sent}"
                         description += f"\n\n-->Received: {self.recv_packet_count}"
                         description += f"\n\nData rate: {self.download_rate/(1024):.0f} KB/s"
